@@ -1,31 +1,38 @@
 import React from "react";
-import { StyleSheet, TouchableWithoutFeedback, Keyboard, ImageBackground, View } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
 
 import RegistrationScreen from "./Screens/RegistrationScreen";
 import LoginScreen from "./Screens/LoginScreen";
 
+const MainStack = createStackNavigator();
+
 export default function App() {
 	return (
-		<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-			<View style={styles.container}>
-				<ImageBackground style={styles.background} source={require("./assets/images/background.jpg")}>
-					<RegistrationScreen />
-					{/* <LoginScreen /> */}
-				</ImageBackground>
-			</View>
-		</TouchableWithoutFeedback>
+		<NavigationContainer>
+			<MainStack.Navigator initialRouteName="Login">
+				{/* 
+            Login screen 
+        */}
+				<MainStack.Screen
+					name="Login"
+					component={LoginScreen}
+					options={{
+						headerShown: false,
+					}}
+				/>
+
+				{/* 
+            Registration screen 
+        */}
+				<MainStack.Screen
+					name="Registration"
+					component={RegistrationScreen}
+					options={{
+						headerShown: false,
+					}}
+				/>
+			</MainStack.Navigator>
+		</NavigationContainer>
 	);
 }
-
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		backgroundColor: "#000",
-	},
-
-	background: {
-		flex: 1,
-		resizeMode: "cover",
-		justifyContent: "center",
-	},
-});

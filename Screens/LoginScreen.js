@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { StyleSheet, TouchableWithoutFeedback, Keyboard, View, Text, TextInput } from "react-native";
+import { StyleSheet, TouchableWithoutFeedback, Keyboard, View, Text, TextInput, ImageBackground } from "react-native";
 import CommonStyles from "../styles/CommonStyles";
 
-export default function LoginScreen() {
+export default function LoginScreen({ navigation }) {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [hidePassword, setHidePassword] = useState(true);
@@ -36,54 +36,68 @@ export default function LoginScreen() {
 		setPassword("");
 	};
 
+	// Go to RegistrationScreen
+	const goToRegistrationScreen = () => navigation.navigate("Registration");
+
 	return (
-		<View style={styles.container}>
-			<View style={styles.signInBlock}>
-				<Text style={styles.header}>Sign in</Text>
+		<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+			<View style={styles.container}>
+				<ImageBackground style={styles.background} source={require("../assets/images/background.jpg")}>
+					<View style={styles.signInBlock}>
+						<Text style={styles.header}>Sign in</Text>
 
-				<View style={styles.inputBlock}>
-					<TextInput
-						style={emailStyle}
-						keyboardType="email-address"
-						value={email}
-						placeholder="Email"
-						onChangeText={value => handleChangeEmail(value)}
-						onFocus={changeEmailStyle}
-						onBlur={resetEmailStyle}
-					/>
+						<View style={styles.inputBlock}>
+							<TextInput
+								style={emailStyle}
+								keyboardType="email-address"
+								value={email}
+								placeholder="Email"
+								onChangeText={value => handleChangeEmail(value)}
+								onFocus={changeEmailStyle}
+								onBlur={resetEmailStyle}
+							/>
 
-					<View style={{ width: "100%" }}>
-						<TextInput
-							style={passwordStyle}
-							secureTextEntry={hidePassword}
-							value={password}
-							placeholder="Password"
-							onChangeText={value => handleChangePassword(value)}
-							onFocus={changePasswordStyle}
-							onBlur={resetPasswordStyle}
-						/>
+							<View style={{ width: "100%" }}>
+								<TextInput
+									style={passwordStyle}
+									secureTextEntry={hidePassword}
+									value={password}
+									placeholder="Password"
+									onChangeText={value => handleChangePassword(value)}
+									onFocus={changePasswordStyle}
+									onBlur={resetPasswordStyle}
+								/>
 
-						<Text style={styles.showPassword} onPress={togglePasswordVisibility}>
-							{hidePassword ? "Show" : "Hidden"}
+								<Text style={styles.showPassword} onPress={togglePasswordVisibility}>
+									{hidePassword ? "Show" : "Hidden"}
+								</Text>
+							</View>
+						</View>
+
+						<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+							<Text style={[CommonStyles.button, styles.signInButton]} onPress={submitForm}>
+								Sign in
+							</Text>
+						</TouchableWithoutFeedback>
+
+						<Text style={styles.registration} onPress={goToRegistrationScreen}>
+							Don't have an account? Register
 						</Text>
 					</View>
-				</View>
-
-				<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-					<Text style={[CommonStyles.button, styles.signInButton]} onPress={submitForm}>
-						Sign in
-					</Text>
-				</TouchableWithoutFeedback>
-
-				<Text style={styles.registration}>Don't have an account? Register</Text>
+				</ImageBackground>
 			</View>
-		</View>
+		</TouchableWithoutFeedback>
 	);
 }
 
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
+	},
+
+	background: {
+		flex: 1,
+		resizeMode: "cover",
 		justifyContent: "flex-end",
 	},
 

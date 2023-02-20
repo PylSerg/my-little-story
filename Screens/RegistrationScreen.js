@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { StyleSheet, TouchableWithoutFeedback, Keyboard, View, Text, TextInput, Image } from "react-native";
+import { StyleSheet, TouchableWithoutFeedback, Keyboard, View, Text, TextInput, Image, ImageBackground } from "react-native";
 import CommonStyles from "../styles/CommonStyles";
 
-export default function RegistrationScreen() {
+export default function RegistrationScreen({ navigation }) {
 	const [login, setLogin] = useState("");
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
@@ -41,60 +41,75 @@ export default function RegistrationScreen() {
 		setPassword("");
 	};
 
+	// Go to LoginScreen
+	const goToRegistrationScreen = () => navigation.navigate("Login");
+
 	return (
-		<View style={styles.container}>
-			<View style={styles.registrationBlock}>
-				<View style={styles.avatar}>
-					<Image style={styles.addButton} source={require("../assets/images/add.png")} />
-				</View>
+		<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+			<View style={styles.container}>
+				<ImageBackground style={styles.background} source={require("../assets/images/background.jpg")}>
+					<View style={styles.registrationBlock}>
+						<View style={styles.avatar}>
+							<Image style={styles.addButton} source={require("../assets/images/add.png")} />
+						</View>
 
-				<Text style={styles.header}>Registration</Text>
+						<Text style={styles.header}>Registration</Text>
 
-				<View style={styles.inputBlock}>
-					<TextInput style={loginStyle} value={login} placeholder="Login" onChangeText={value => handleChangeLogin(value)} onFocus={changeLoginStyle} onBlur={resetLoginStyle} />
+						<View style={styles.inputBlock}>
+							<TextInput style={loginStyle} value={login} placeholder="Login" onChangeText={value => handleChangeLogin(value)} onFocus={changeLoginStyle} onBlur={resetLoginStyle} />
 
-					<TextInput
-						style={emailStyle}
-						keyboardType="email-address"
-						value={email}
-						placeholder="Email"
-						onChangeText={value => handleChangeEmail(value)}
-						onFocus={changeEmailStyle}
-						onBlur={resetEmailStyle}
-					/>
+							<TextInput
+								style={emailStyle}
+								keyboardType="email-address"
+								value={email}
+								placeholder="Email"
+								onChangeText={value => handleChangeEmail(value)}
+								onFocus={changeEmailStyle}
+								onBlur={resetEmailStyle}
+							/>
 
-					<View style={{ width: "100%" }}>
-						<TextInput
-							style={passwordStyle}
-							secureTextEntry={hidePassword}
-							value={password}
-							placeholder="Password"
-							onChangeText={value => handleChangePassword(value)}
-							onFocus={changePasswordStyle}
-							onBlur={resetPasswordStyle}
-						/>
+							<View style={{ width: "100%" }}>
+								<TextInput
+									style={passwordStyle}
+									secureTextEntry={hidePassword}
+									value={password}
+									placeholder="Password"
+									onChangeText={value => handleChangePassword(value)}
+									onFocus={changePasswordStyle}
+									onBlur={resetPasswordStyle}
+								/>
 
-						<Text style={styles.showPassword} onPress={togglePasswordVisibility}>
-							{hidePassword ? "Show" : "Hidden"}
+								<Text style={styles.showPassword} onPress={togglePasswordVisibility}>
+									{hidePassword ? "Show" : "Hidden"}
+								</Text>
+							</View>
+						</View>
+
+						<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+							<Text style={[CommonStyles.button, styles.registrationButton]} onPress={submitForm}>
+								Registration
+							</Text>
+						</TouchableWithoutFeedback>
+
+						<Text style={styles.signIn} onPress={goToRegistrationScreen}>
+							Already have an account? Sign in
 						</Text>
 					</View>
-				</View>
-
-				<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-					<Text style={[CommonStyles.button, styles.registrationButton]} onPress={submitForm}>
-						Registration
-					</Text>
-				</TouchableWithoutFeedback>
-
-				<Text style={styles.signIn}>Already have an account? Sign in</Text>
+				</ImageBackground>
 			</View>
-		</View>
+		</TouchableWithoutFeedback>
 	);
 }
 
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
+		justifyContent: "flex-end",
+	},
+
+	background: {
+		flex: 1,
+		resizeMode: "cover",
 		justifyContent: "flex-end",
 	},
 
