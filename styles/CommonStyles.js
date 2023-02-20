@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 
-export default CommonStyles = StyleSheet.create({
+const CommonStyles = StyleSheet.create({
 	input: {
 		width: "100%",
 		padding: 16,
@@ -36,3 +36,5 @@ export default CommonStyles = StyleSheet.create({
 		borderRadius: 100,
 	},
 });
+
+export default CommonStyles;
