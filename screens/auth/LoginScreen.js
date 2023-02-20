@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import { StyleSheet, TouchableWithoutFeedback, Keyboard, View, Text, TextInput, Image, ImageBackground } from "react-native";
-import CommonStyles from "../styles/CommonStyles";
+import { StyleSheet, TouchableWithoutFeedback, Keyboard, View, Text, TextInput, ImageBackground } from "react-native";
+import CommonStyles from "../../styles/CommonStyles";
 
-export default function RegistrationScreen({ navigation }) {
-	const [login, setLogin] = useState("");
+export default function LoginScreen({ navigation }) {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [hidePassword, setHidePassword] = useState(true);
@@ -11,7 +10,6 @@ export default function RegistrationScreen({ navigation }) {
 	const defaultInputStyle = [CommonStyles.input, styles.input];
 	const activeInputStyle = [...defaultInputStyle, CommonStyles.inputActive];
 
-	const [loginStyle, setLoginStyle] = useState(defaultInputStyle);
 	const [emailStyle, setEmailStyle] = useState(defaultInputStyle);
 	const [passwordStyle, setPasswordStyle] = useState(defaultInputStyle);
 
@@ -19,45 +17,38 @@ export default function RegistrationScreen({ navigation }) {
 	const togglePasswordVisibility = () => setHidePassword(!hidePassword);
 
 	// Changes input value
-	const handleChangeLogin = value => setLogin(value);
 	const handleChangeEmail = value => setEmail(value);
 	const handleChangePassword = value => setPassword(value);
 
 	// Changes input style to active
-	const changeLoginStyle = () => setLoginStyle(activeInputStyle);
 	const changeEmailStyle = () => setEmailStyle(activeInputStyle);
 	const changePasswordStyle = () => setPasswordStyle(activeInputStyle);
 
 	// Reset input style
-	const resetLoginStyle = () => setLoginStyle(defaultInputStyle);
 	const resetEmailStyle = () => setEmailStyle(defaultInputStyle);
 	const resetPasswordStyle = () => setPasswordStyle(defaultInputStyle);
 
 	// Submit form
 	const submitForm = () => {
-		console.log({ login: login, email: email, password: password });
-		setLogin("");
+		console.log({ email: email, password: password });
+
 		setEmail("");
 		setPassword("");
+
+		navigation.navigate("Home");
 	};
 
-	// Go to LoginScreen
-	const goToRegistrationScreen = () => navigation.navigate("Login");
+	// Go to RegistrationScreen
+	const goToRegistrationScreen = () => navigation.navigate("Registration");
 
 	return (
 		<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
 			<View style={styles.container}>
-				<ImageBackground style={styles.background} source={require("../assets/images/background.jpg")}>
-					<View style={styles.registrationBlock}>
-						<View style={styles.avatar}>
-							<Image style={styles.addButton} source={require("../assets/images/add.png")} />
-						</View>
-
-						<Text style={styles.header}>Registration</Text>
+				<ImageBackground style={styles.background} source={require("../../assets/images/background.jpg")}>
+					<View style={styles.signInBlock}>
+						<Text style={styles.header}>Sign in</Text>
 
 						<View style={styles.inputBlock}>
-							<TextInput style={loginStyle} value={login} placeholder="Login" onChangeText={value => handleChangeLogin(value)} onFocus={changeLoginStyle} onBlur={resetLoginStyle} />
-
 							<TextInput
 								style={emailStyle}
 								keyboardType="email-address"
@@ -86,13 +77,13 @@ export default function RegistrationScreen({ navigation }) {
 						</View>
 
 						<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-							<Text style={[CommonStyles.button, styles.registrationButton]} onPress={submitForm}>
-								Registration
+							<Text style={[CommonStyles.button, styles.signInButton]} onPress={submitForm}>
+								Sign in
 							</Text>
 						</TouchableWithoutFeedback>
 
-						<Text style={styles.signIn} onPress={goToRegistrationScreen}>
-							Already have an account? Sign in
+						<Text style={styles.registration} onPress={goToRegistrationScreen}>
+							Don't have an account? Register
 						</Text>
 					</View>
 				</ImageBackground>
@@ -104,7 +95,6 @@ export default function RegistrationScreen({ navigation }) {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		justifyContent: "flex-end",
 	},
 
 	background: {
@@ -113,31 +103,14 @@ const styles = StyleSheet.create({
 		justifyContent: "flex-end",
 	},
 
-	registrationBlock: {
+	signInBlock: {
 		alignItems: "center",
 		paddingLeft: 16,
 		paddingRight: 16,
-		paddingTop: 92,
+		paddingTop: 32,
 		backgroundColor: "#fff",
 		borderTopLeftRadius: 25,
 		borderTopRightRadius: 25,
-	},
-
-	avatar: {
-		position: "absolute",
-		top: -60,
-		width: 120,
-		height: 120,
-		backgroundColor: "#f6f6f6",
-		borderRadius: 16,
-	},
-
-	addButton: {
-		position: "absolute",
-		right: -12,
-		bottom: 14,
-		width: 25,
-		height: 25,
 	},
 
 	header: {
@@ -162,22 +135,16 @@ const styles = StyleSheet.create({
 		fontSize: 16,
 	},
 
-	registrationButton: {
+	signInButton: {
 		marginTop: 27,
 	},
 
-	signIn: {
+	registration: {
 		marginTop: 16,
-		marginBottom: 45,
+		marginBottom: 111,
 
 		color: "#1B4371",
 		fontSize: 16,
 		lineHeight: 19,
 	},
 });
-
-// Frame
-//
-// borderWidth: 1,
-// borderStyle: "solid",
-// borderColor: "tomato",
