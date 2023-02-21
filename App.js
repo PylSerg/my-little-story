@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
+
+import { LogBox } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 
@@ -6,44 +8,48 @@ import RegistrationScreen from "./screens/auth/RegistrationScreen";
 import LoginScreen from "./screens/auth/LoginScreen";
 import Home from "./screens/main/Home";
 
+LogBox.ignoreLogs(["Non-serializable values were found in the navigation state"]);
+
 const MainStack = createStackNavigator();
 
 export default function App() {
+	const [isRegistered, setIsRegistered] = useState(false);
+
 	return (
 		<NavigationContainer>
-			<MainStack.Navigator initialRouteName="Login">
-				{/* 
-            Login screen 
-        */}
-				<MainStack.Screen
-					name="Login"
-					component={LoginScreen}
-					options={{
-						headerShown: false,
-					}}
-				/>
+			<MainStack.Navigator>
+				{!isRegistered && (
+					<>
+						<MainStack.Screen
+							name="Login"
+							component={LoginScreen}
+							options={{
+								headerShown: false,
+							}}
+							initialParams={{ setIsRegistered }}
+						/>
 
-				{/* 
-            Registration screen 
-        */}
-				<MainStack.Screen
-					name="Registration"
-					component={RegistrationScreen}
-					options={{
-						headerShown: false,
-					}}
-				/>
+						<MainStack.Screen
+							name="Registration"
+							component={RegistrationScreen}
+							options={{
+								headerShown: false,
+							}}
+							initialParams={{ setIsRegistered }}
+						/>
+					</>
+				)}
 
-				{/* 
-            Home screen 
-        */}
-				<MainStack.Screen
-					name="Home"
-					component={Home}
-					options={{
-						headerShown: false,
-					}}
-				/>
+				{isRegistered && (
+					<MainStack.Screen
+						name="Home"
+						component={Home}
+						options={{
+							headerShown: false,
+						}}
+						initialParams={{ setIsRegistered }}
+					/>
+				)}
 			</MainStack.Navigator>
 		</NavigationContainer>
 	);

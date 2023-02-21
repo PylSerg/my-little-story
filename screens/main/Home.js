@@ -7,7 +7,7 @@ import ProfileScreen from "./ProfileScreen";
 
 const Tab = createBottomTabNavigator();
 
-export default function Home() {
+export default function Home({ route }) {
 	return (
 		<Tab.Navigator initialRouteName="PostsScreen">
 			<Tab.Screen

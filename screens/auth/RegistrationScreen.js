@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { StyleSheet, TouchableWithoutFeedback, Keyboard, View, Text, TextInput, Image, ImageBackground } from "react-native";
 import CommonStyles from "../../styles/CommonStyles";
 
-export default function RegistrationScreen({ navigation }) {
+export default function RegistrationScreen({ navigation, route }) {
 	const [login, setLogin] = useState("");
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
@@ -40,7 +40,7 @@ export default function RegistrationScreen({ navigation }) {
 		setEmail("");
 		setPassword("");
 
-		navigation.navigate("Home");
+		route.params.setIsRegistered(true);
 	};
 
 	// Go to LoginScreen
