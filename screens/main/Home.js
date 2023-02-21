@@ -1,4 +1,7 @@
 import React from "react";
+
+import { Button } from "react-native";
+
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import PostsScreen from "./PostsScreen";
@@ -8,6 +11,10 @@ import ProfileScreen from "./ProfileScreen";
 const Tab = createBottomTabNavigator();
 
 export default function Home({ route }) {
+	const logOut = () => {
+		return <Button title="Log out" onPress={() => route.params.setIsRegistered(false)} />;
+	};
+
 	return (
 		<Tab.Navigator initialRouteName="PostsScreen">
 			<Tab.Screen
@@ -19,6 +26,7 @@ export default function Home({ route }) {
 						fontSize: 17,
 						lineHeight: 22,
 					},
+					headerRight: logOut,
 				}}
 			/>
 			<Tab.Screen
@@ -41,6 +49,7 @@ export default function Home({ route }) {
 						fontSize: 17,
 						lineHeight: 22,
 					},
+					headerRight: logOut,
 				}}
 			/>
 		</Tab.Navigator>
