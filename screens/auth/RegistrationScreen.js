@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { StyleSheet, TouchableWithoutFeedback, Keyboard, View, Text, TextInput, Image, ImageBackground } from "react-native";
+
 import CommonStyles from "../../styles/CommonStyles";
+import AddIcon from "../../assets/icons/add.svg";
 
 export default function RegistrationScreen({
 	navigation: { navigate },
@@ -57,7 +59,7 @@ export default function RegistrationScreen({
 				<ImageBackground style={styles.background} source={require("../../assets/images/background.jpg")}>
 					<View style={styles.registrationBlock}>
 						<View style={styles.avatar}>
-							<Image style={styles.addButton} source={require("../../assets/images/add.png")} />
+							<AddIcon style={styles.addButton} />
 						</View>
 
 						<Text style={styles.header}>Registration</Text>
