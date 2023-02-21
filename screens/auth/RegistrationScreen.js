@@ -2,7 +2,12 @@ import React, { useState } from "react";
 import { StyleSheet, TouchableWithoutFeedback, Keyboard, View, Text, TextInput, Image, ImageBackground } from "react-native";
 import CommonStyles from "../../styles/CommonStyles";
 
-export default function RegistrationScreen({ navigation, route }) {
+export default function RegistrationScreen({
+	navigation: { navigate },
+	route: {
+		params: { setIsRegistered },
+	},
+}) {
 	const [login, setLogin] = useState("");
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
@@ -40,11 +45,11 @@ export default function RegistrationScreen({ navigation, route }) {
 		setEmail("");
 		setPassword("");
 
-		route.params.setIsRegistered(true);
+		setIsRegistered(true);
 	};
 
 	// Go to LoginScreen
-	const goToRegistrationScreen = () => navigation.navigate("Login");
+	const goToLoginScreen = () => navigate("Login");
 
 	return (
 		<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -93,7 +98,7 @@ export default function RegistrationScreen({ navigation, route }) {
 							</Text>
 						</TouchableWithoutFeedback>
 
-						<Text style={styles.signIn} onPress={goToRegistrationScreen}>
+						<Text style={styles.signIn} onPress={goToLoginScreen}>
 							Already have an account? Sign in
 						</Text>
 					</View>

@@ -10,13 +10,17 @@ import ProfileScreen from "./ProfileScreen";
 
 const Tab = createBottomTabNavigator();
 
-export default function Home({ route }) {
+export default function Home({
+	route: {
+		params: { setIsRegistered },
+	},
+}) {
 	const logOut = () => {
-		return <Button title="Log out" onPress={() => route.params.setIsRegistered(false)} />;
+		return <Button title="Log out" onPress={() => setIsRegistered(false)} />;
 	};
 
 	return (
-		<Tab.Navigator initialRouteName="PostsScreen">
+		<Tab.Navigator initialRouteName="PostsScreen" tabBarOption={{ showLabel: false }}>
 			<Tab.Screen
 				name="PostsScreen"
 				component={PostsScreen}
