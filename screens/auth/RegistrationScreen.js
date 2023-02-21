@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, TouchableWithoutFeedback, Keyboard, View, Text, TextInput, Image, ImageBackground } from "react-native";
+import { StyleSheet, TouchableWithoutFeedback, Keyboard, View, Text, TextInput, ImageBackground } from "react-native";
 
 import CommonStyles from "../../styles/CommonStyles";
 import AddIcon from "../../assets/icons/add.svg";
