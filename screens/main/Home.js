@@ -1,12 +1,14 @@
 import React from "react";
 
-import { Button } from "react-native";
+import { StyleSheet } from "react-native";
 
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import PostsScreen from "./PostsScreen";
 import CreatePostsScreen from "./CreatePostsScreen";
 import ProfileScreen from "./ProfileScreen";
+
+import LogOutIcon from "../../assets/icons/log-out.svg";
 
 const Tab = createBottomTabNavigator();
 
@@ -16,7 +18,7 @@ export default function Home({
 	},
 }) {
 	const logOut = () => {
-		return <Button title="Log out" onPress={() => setIsRegistered(false)} />;
+		return <LogOutIcon style={styles.logOutIcon} onPress={() => setIsRegistered(false)} />;
 	};
 
 	return (
@@ -59,3 +61,11 @@ export default function Home({
 		</Tab.Navigator>
 	);
 }
+
+const styles = StyleSheet.create({
+	logOutIcon: {
+		width: 24,
+		height: 24,
+		marginRight: 16,
+	},
+});
