@@ -9,6 +9,9 @@ import CreatePostsScreen from "./CreatePostsScreen";
 import ProfileScreen from "./ProfileScreen";
 
 import LogOutIcon from "../../assets/icons/log-out.svg";
+import PostsIcon from "../../assets/menu-icons/posts.svg";
+import CreateIcon from "../../assets/menu-icons/create.svg";
+import ProfileIcon from "../../assets/menu-icons/profile.svg";
 
 const Tab = createBottomTabNavigator();
 
@@ -22,7 +25,17 @@ export default function Home({
 	};
 
 	return (
-		<Tab.Navigator initialRouteName="PostsScreen" tabBarOption={{ showLabel: false }}>
+		<Tab.Navigator
+			initialRouteName="PostsScreen"
+			screenOptions={{
+				tabBarStyle: {
+					display: "flex",
+					height: 60,
+					paddingTop: 10,
+					paddingBottom: 10,
+				},
+			}}
+		>
 			<Tab.Screen
 				name="PostsScreen"
 				component={PostsScreen}
@@ -32,7 +45,10 @@ export default function Home({
 						fontSize: 17,
 						lineHeight: 22,
 					},
+
 					headerRight: logOut,
+					tabBarIcon: () => <PostsIcon style={styles.tabIcon} />,
+					tabBarShowLabel: false,
 				}}
 			/>
 			<Tab.Screen
@@ -43,6 +59,13 @@ export default function Home({
 					headerTitleStyle: {
 						fontSize: 17,
 						lineHeight: 22,
+					},
+
+					tabBarIcon: () => <CreateIcon style={styles.activeTabIcon()} />,
+					tabBarShowLabel: false,
+					tabBarItemStyle: {
+						backgroundColor: "#ff6c00",
+						borderRadius: 20,
 					},
 				}}
 			/>
@@ -55,7 +78,10 @@ export default function Home({
 						fontSize: 17,
 						lineHeight: 22,
 					},
+
 					headerRight: logOut,
+					tabBarIcon: () => <ProfileIcon style={styles.tabIcon} />,
+					tabBarShowLabel: false,
 				}}
 			/>
 		</Tab.Navigator>
@@ -67,5 +93,21 @@ const styles = StyleSheet.create({
 		width: 24,
 		height: 24,
 		marginRight: 16,
+	},
+
+	tabIcon: {
+		width: 24,
+		height: 24,
+	},
+
+	tabIconCentral: {
+		fill: "#fff",
+	},
+
+	activeTabIcon() {
+		return {
+			...this.tabIcon,
+			...this.tabIconCentral,
+		};
 	},
 });
