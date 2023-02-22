@@ -1,6 +1,6 @@
 import React from "react";
 
-import { StyleSheet } from "react-native";
+import { StyleSheet, TouchableOpacity } from "react-native";
 
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
@@ -21,7 +21,11 @@ export default function Home({
 	},
 }) {
 	const logOut = () => {
-		return <LogOutIcon style={styles.logOutIcon} onPress={() => setIsRegistered(false)} />;
+		return (
+			<TouchableOpacity style={styles.logOutIcon} onPress={() => setIsRegistered(false)}>
+				<LogOutIcon />
+			</TouchableOpacity>
+		);
 	};
 
 	return (
