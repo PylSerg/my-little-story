@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, TouchableWithoutFeedback, Keyboard, View, Text, TextInput, ImageBackground } from "react-native";
+import { StyleSheet, TouchableOpacity, TouchableWithoutFeedback, Keyboard, View, Text, TextInput, ImageBackground } from "react-native";
 
 import CommonStyles from "../../styles/CommonStyles";
 import AddIcon from "../../assets/icons/add.svg";
@@ -94,11 +94,9 @@ export default function RegistrationScreen({
 							</View>
 						</View>
 
-						<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-							<Text style={[CommonStyles.button, styles.registrationButton]} onPress={submitForm}>
-								Registration
-							</Text>
-						</TouchableWithoutFeedback>
+						<TouchableOpacity style={[CommonStyles.button, styles.registrationButton]} onPress={submitForm}>
+							<Text style={CommonStyles.buttonTitle}>Registration</Text>
+						</TouchableOpacity>
 
 						<Text style={styles.signIn} onPress={goToLoginScreen}>
 							Already have an account? Sign in

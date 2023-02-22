@@ -23,17 +23,21 @@ const CommonStyles = StyleSheet.create({
 	},
 
 	button: {
+		justifyContent: "center",
+		alignItems: "center",
 		width: "100%",
 
 		padding: 16,
 
+		backgroundColor: "#ff6c00",
+		borderRadius: 100,
+	},
+
+	buttonTitle: {
 		color: "#fff",
 		fontSize: 16,
 		lineHeight: 19,
 		textAlign: "center",
-
-		backgroundColor: "#ff6c00",
-		borderRadius: 100,
 	},
 });
 
