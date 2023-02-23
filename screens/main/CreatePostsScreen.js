@@ -3,6 +3,8 @@ import { Text, View, Image, TouchableOpacity, StyleSheet } from "react-native";
 
 import { Camera } from "expo-camera";
 
+import Snap from "../../assets/icons/snap.svg";
+
 import CommonStyles from "../../styles/CommonStyles";
 
 export default function CreatePostsScreen({ navigation: { navigate } }) {
@@ -38,13 +40,9 @@ export default function CreatePostsScreen({ navigation: { navigate } }) {
 							</View>
 						)}
 
-						{!photo && (
-							<TouchableOpacity onPress={takePhoto}>
-								<View style={styles.snapContainer}>
-									<Text style={styles.snap}>SNAP</Text>
-								</View>
-							</TouchableOpacity>
-						)}
+						<TouchableOpacity onPress={takePhoto}>
+							<Snap style={styles.snap} />
+						</TouchableOpacity>
 					</Camera>
 
 					<TouchableOpacity style={[CommonStyles.button, styles.button]} onPress={publishPhoto}>
@@ -75,20 +73,11 @@ const styles = StyleSheet.create({
 		borderStyle: "solid",
 		borderColor: "#e8e8e8",
 		borderRadius: 8,
-
-		overflow: "hidden",
 	},
 
-	snapContainer: {
+	snap: {
 		width: 60,
 		height: 60,
-
-		justifyContent: "center",
-		alignItems: "center",
-
-		borderWidth: 3,
-		borderColor: "#fff",
-		borderRadius: 50,
 	},
 	snap: {
 		color: "#fff",
