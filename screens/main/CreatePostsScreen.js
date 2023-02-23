@@ -17,10 +17,23 @@ export default function CreatePostsScreen({ navigation: { navigate } }) {
 		setReboot(false);
 	}, [reboot]);
 
+	const takeOrClear = () => {
+		if (!photo) {
+			takePhoto();
+		} else {
+			clearPhoto();
+		}
+	};
+
 	const takePhoto = async () => {
 		const photo = await camera.takePictureAsync();
 
 		setPhoto(photo.uri);
+	};
+
+	const clearPhoto = () => {
+		setPhoto(null);
+		setReboot(true);
 	};
 
 	const publishPhoto = () => {
@@ -40,7 +53,7 @@ export default function CreatePostsScreen({ navigation: { navigate } }) {
 							</View>
 						)}
 
-						<TouchableOpacity onPress={takePhoto}>
+						<TouchableOpacity onPress={takeOrClear}>
 							<Snap style={styles.snap} />
 						</TouchableOpacity>
 					</Camera>
@@ -68,11 +81,6 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 
 		marginTop: 32,
-
-		borderWidth: 1,
-		borderStyle: "solid",
-		borderColor: "#e8e8e8",
-		borderRadius: 8,
 	},
 
 	snap: {
