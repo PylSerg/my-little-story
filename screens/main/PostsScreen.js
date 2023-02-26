@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, Image, StyleSheet, FlatList, TouchableOpacity } from "react-native";
 
-import MapPin from "../../assets/icons/map-pin.svg";
+import CommentsIcon from "../../assets/icons/comments.svg";
+import MapPinIcon from "../../assets/icons/map-pin.svg";
 
 export default function PostsScreen({ navigation: { navigate }, route: { params } }) {
 	const [posts, setPosts] = useState([]);
@@ -22,12 +23,14 @@ export default function PostsScreen({ navigation: { navigate }, route: { params 
 						<Text style={styles.label}>{item.photoName}</Text>
 
 						<View style={styles.detailsContainer}>
-							<TouchableOpacity>
-								<Text>Comments</Text>
+							<TouchableOpacity style={styles.commentsContainer}>
+								<CommentsIcon style={styles.commentsIcon} />
+
+								<Text style={styles.commentsCount}>0</Text>
 							</TouchableOpacity>
 
 							<TouchableOpacity onPress={() => navigate("MapScreen", { coords: item.coords, placeLabel: item.photoPlace })}>
-								<MapPin style={styles.mapPin} />
+								<MapPinIcon style={styles.mapPinIcon} />
 
 								<Text style={styles.place}>{item.photoPlace}</Text>
 							</TouchableOpacity>
@@ -77,7 +80,26 @@ const styles = StyleSheet.create({
 		marginTop: 8,
 	},
 
-	mapPin: {
+	commentsContainer: {
+		display: "flex",
+		flexDirection: "row",
+		alignItems: "center",
+	},
+
+	commentsIcon: {
+		width: 24,
+		height: 24,
+	},
+
+	commentsCount: {
+		color: "#bdbdbd",
+		fontSize: 16,
+		lineHeight: 19,
+
+		marginLeft: 6,
+	},
+
+	mapPinIcon: {
 		position: "absolute",
 		left: -28,
 		top: "-10%",
