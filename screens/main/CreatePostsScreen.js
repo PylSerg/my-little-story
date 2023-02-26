@@ -6,11 +6,14 @@ import * as Location from "expo-location";
 
 import Snap from "../../assets/icons/snap.svg";
 import MapPin from "../../assets/icons/map-pin.svg";
+import Trash from "../../assets/icons/trash.svg";
 
 import CommonStyles from "../../styles/CommonStyles";
 
 export default function CreatePostsScreen({ navigation: { navigate } }) {
 	const [reboot, setReboot] = useState(false);
+
+	const [readyToPublish, setReadyToPublish] = useState(false);
 
 	const [camera, setCamera] = useState(null);
 	const [photo, setPhoto] = useState(null);
@@ -29,6 +32,10 @@ export default function CreatePostsScreen({ navigation: { navigate } }) {
 			let { status } = await Location.requestForegroundPermissionsAsync();
 		})();
 	}, []);
+
+	useEffect(() => {
+		if (photo && photoName && photoPlace) setReadyToPublish(true);
+	});
 
 	const takeOrClear = () => {
 		if (!photo) {
@@ -52,10 +59,21 @@ export default function CreatePostsScreen({ navigation: { navigate } }) {
 	};
 
 	const handelChangePhotoName = value => setPhotoName(value);
+	const handelChangePhotoPlace = value => setPhotoPlace(value);
 
 	const publishPhoto = () => {
 		navigate("PostsScreen", { photo, coords });
+
+		handleClearData();
+	};
+
+	const handleClearData = () => {
 		setPhoto(null);
+		setPhotoName("");
+		setPhotoPlace("");
+		setCoords({ lat: 0, lon: 0 });
+
+		setReadyToPublish(false);
 		setReboot(true);
 	};
 
@@ -63,36 +81,48 @@ export default function CreatePostsScreen({ navigation: { navigate } }) {
 		<>
 			{!reboot && (
 				<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-					<ScrollView style={styles.container}>
-						<Camera style={styles.camera} type="front" ref={setCamera}>
-							{photo && (
-								<View style={styles.photoContainer}>
-									<Image style={styles.photo} source={{ uri: photo }} />
-								</View>
-							)}
+					<>
+						<ScrollView style={styles.container}>
+							<Camera style={styles.camera} type="front" ref={setCamera}>
+								{photo && (
+									<View style={styles.photoContainer}>
+										<Image style={styles.photo} source={{ uri: photo }} />
+									</View>
+								)}
 
-							<TouchableOpacity onPress={takeOrClear}>
-								<Snap style={styles.snap} />
-							</TouchableOpacity>
-						</Camera>
+								<TouchableOpacity onPress={takeOrClear}>
+									<Snap style={styles.snap} />
+								</TouchableOpacity>
+							</Camera>
 
-						<View style={styles.descriptionContainer}>
-							<KeyboardAvoidingView behavior={Platform.OS == "ios" ? "padding" : "height"}>
-								<TextInput style={styles.descriptionInput} value={photoName} placeholder="Name..." onChangeText={value => handelChangePhotoName(value)} />
-							</KeyboardAvoidingView>
-
-							<View>
-								<MapPin style={styles.mapPin} />
+							<View style={styles.descriptionContainer}>
 								<KeyboardAvoidingView behavior={Platform.OS == "ios" ? "padding" : "height"}>
-									<TextInput style={[styles.descriptionInput, { paddingLeft: 28 }]} placeholder={`Place...`} />
+									<TextInput style={styles.descriptionInput} value={photoName} placeholder="Name..." onChangeText={value => handelChangePhotoName(value)} />
 								</KeyboardAvoidingView>
-							</View>
-						</View>
 
-						<TouchableOpacity style={[CommonStyles.button, styles.button]} onPress={publishPhoto}>
-							<Text style={CommonStyles.buttonTitle}>Publish</Text>
-						</TouchableOpacity>
-					</ScrollView>
+								<View>
+									<MapPin style={styles.mapPin} />
+									<KeyboardAvoidingView behavior={Platform.OS == "ios" ? "padding" : "height"}>
+										<TextInput style={[styles.descriptionInput, { paddingLeft: 28 }]} placeholder={`Place...`} onChangeText={value => handelChangePhotoPlace(value)} />
+									</KeyboardAvoidingView>
+								</View>
+							</View>
+
+							<TouchableOpacity
+								style={readyToPublish ? styles.publishButton() : [styles.publishButton(), { backgroundColor: "#f6f6f6" }]}
+								disabled={!readyToPublish}
+								onPress={publishPhoto}
+							>
+								<Text style={readyToPublish ? CommonStyles.buttonTitle : [CommonStyles.buttonTitle, { color: "#bdbdbd" }]}>Publish</Text>
+							</TouchableOpacity>
+						</ScrollView>
+
+						<View style={styles.trashButtonContainer}>
+							<TouchableOpacity style={styles.trashButton} onPress={handleClearData}>
+								<Trash style={styles.trashIcon} />
+							</TouchableOpacity>
+						</View>
+					</>
 				</TouchableWithoutFeedback>
 			)}
 		</>
@@ -102,7 +132,10 @@ export default function CreatePostsScreen({ navigation: { navigate } }) {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
+
 		paddingHorizontal: 16,
+
+		backgroundColor: "#fff",
 	},
 
 	camera: {
@@ -153,7 +186,35 @@ const styles = StyleSheet.create({
 		height: 24,
 	},
 
-	button: {
-		marginTop: 16,
+	trashButtonContainer: {
+		alignItems: "center",
+
+		backgroundColor: "#fff",
+	},
+
+	trashButton: {
+		width: 70,
+		height: 40,
+
+		marginTop: 10,
+		marginBottom: 20,
+
+		paddingHorizontal: 23,
+		paddingVertical: 8,
+
+		backgroundColor: "#f6f6f6",
+		borderRadius: 20,
+	},
+
+	trashIcon: {
+		width: 24,
+		height: 24,
+	},
+
+	publishButton() {
+		return {
+			...CommonStyles.button,
+			marginTop: 16,
+		};
 	},
 });
