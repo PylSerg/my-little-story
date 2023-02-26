@@ -8,10 +8,13 @@ import PostsScreen from "./PostsScreen";
 import CreatePostsScreen from "./CreatePostsScreen";
 import ProfileScreen from "./ProfileScreen";
 
+import GoBackIcon from "../../assets/icons/back.svg";
 import LogOutIcon from "../../assets/icons/log-out.svg";
 import PostsIcon from "../../assets/menu-icons/posts.svg";
 import CreateIcon from "../../assets/menu-icons/create.svg";
 import ProfileIcon from "../../assets/menu-icons/profile.svg";
+
+import { CommonActions } from "@react-navigation/native";
 
 const Tab = createBottomTabNavigator();
 
@@ -20,6 +23,16 @@ export default function Home({
 		params: { setIsRegistered },
 	},
 }) {
+	const goBack = () => {
+		CommonActions.goBack();
+
+		return (
+			<TouchableOpacity style={styles.goBackIcon} onPress={() => setIsRegistered(false)}>
+				<GoBackIcon />
+			</TouchableOpacity>
+		);
+	};
+
 	const logOut = () => {
 		return (
 			<TouchableOpacity style={styles.logOutIcon} onPress={() => setIsRegistered(false)}>
@@ -51,10 +64,12 @@ export default function Home({
 					},
 
 					headerRight: logOut,
+
 					tabBarIcon: () => <PostsIcon style={styles.tabIcon} />,
 					tabBarShowLabel: false,
 				}}
 			/>
+
 			<Tab.Screen
 				name="CreatePostsScreen"
 				component={CreatePostsScreen}
@@ -65,11 +80,17 @@ export default function Home({
 						lineHeight: 22,
 					},
 
+					headerLeft: goBack,
+
 					tabBarIcon: () => <CreateIcon style={styles.activeTabIcon()} />,
 					tabBarShowLabel: false,
 					tabBarItemStyle: {
 						backgroundColor: "#ff6c00",
 						borderRadius: 20,
+					},
+
+					tabBarStyle: {
+						display: "none",
 					},
 				}}
 			/>
@@ -97,6 +118,12 @@ const styles = StyleSheet.create({
 		width: 24,
 		height: 24,
 		marginRight: 16,
+	},
+
+	goBackIcon: {
+		width: 24,
+		height: 24,
+		marginLeft: 20,
 	},
 
 	tabIcon: {

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { View, Image, StyleSheet, FlatList } from "react-native";
+import { View, Image, Button, StyleSheet, FlatList } from "react-native";
 
-export default function PostsScreen({ route: { params } }) {
+export default function PostsScreen({ navigation: { navigate }, route: { params } }) {
 	const [posts, setPosts] = useState([]);
 
 	useEffect(() => {
@@ -16,6 +16,7 @@ export default function PostsScreen({ route: { params } }) {
 				renderItem={({ item }) => (
 					<View style={styles.postsContainer}>
 						<Image style={styles.image} source={{ uri: item.photo }} />
+						<Button title="Map" onPress={() => navigate("MapScreen")} />
 					</View>
 				)}
 			/>
