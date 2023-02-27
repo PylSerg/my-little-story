@@ -2,12 +2,7 @@ import React, { useState } from "react";
 import { StyleSheet, TouchableOpacity, TouchableWithoutFeedback, Keyboard, View, Text, TextInput, ImageBackground } from "react-native";
 import CommonStyles from "../../styles/CommonStyles";
 
-export default function LoginScreen({
-	navigation: { navigate },
-	route: {
-		params: { setIsRegistered },
-	},
-}) {
+export default function LoginScreen({ navigation: { navigate } }) {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [hidePassword, setHidePassword] = useState(true);
@@ -39,8 +34,6 @@ export default function LoginScreen({
 
 		setEmail("");
 		setPassword("");
-
-		setIsRegistered(true);
 	};
 
 	// Go to RegistrationScreen

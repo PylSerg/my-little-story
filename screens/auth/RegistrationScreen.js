@@ -1,15 +1,13 @@
 import React, { useState } from "react";
 import { StyleSheet, TouchableOpacity, TouchableWithoutFeedback, Keyboard, View, Text, TextInput, ImageBackground } from "react-native";
 
+import { useDispatch } from "react-redux";
+import { authSignUpUser } from "../../redux/auth/authOperations";
+
 import CommonStyles from "../../styles/CommonStyles";
 import AddIcon from "../../assets/icons/add.svg";
 
-export default function RegistrationScreen({
-	navigation: { navigate },
-	route: {
-		params: { setIsRegistered },
-	},
-}) {
+export default function RegistrationScreen({ navigation: { navigate } }) {
 	const [login, setLogin] = useState("");
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
@@ -21,6 +19,8 @@ export default function RegistrationScreen({
 	const [loginStyle, setLoginStyle] = useState(defaultInputStyle);
 	const [emailStyle, setEmailStyle] = useState(defaultInputStyle);
 	const [passwordStyle, setPasswordStyle] = useState(defaultInputStyle);
+
+	const dispatch = useDispatch();
 
 	// Toggle password visibility
 	const togglePasswordVisibility = () => setHidePassword(!hidePassword);
@@ -42,12 +42,11 @@ export default function RegistrationScreen({
 
 	// Submit form
 	const submitForm = () => {
-		console.log({ login: login, email: email, password: password });
+		dispatch(authSignUpUser({ login: login, email: email, password: password }));
+		// console.log({ login: login, email: email, password: password });
 		setLogin("");
 		setEmail("");
 		setPassword("");
-
-		setIsRegistered(true);
 	};
 
 	// Go to LoginScreen
