@@ -1,119 +1,88 @@
-import React, { useState, useEffect } from "react";
-import { View, Text, Image, StyleSheet, FlatList, TouchableOpacity } from "react-native";
+import React from "react";
 
-import CommentsIcon from "../../assets/icons/comments.svg";
-import MapPinIcon from "../../assets/icons/map-pin.svg";
+import { StyleSheet, TouchableOpacity, moduleName } from "react-native";
+import { createStackNavigator } from "@react-navigation/stack";
 
-export default function PostsScreen({ navigation: { navigate }, route: { params } }) {
-	const [posts, setPosts] = useState([]);
+import DefaultScreenPosts from "../nested/DefaultScreenPosts";
+import CommentsScreen from "../nested/CommentsScreen";
+import MapScreen from "../nested/MapScreen";
 
-	useEffect(() => {
-		if (params) setPosts(prevState => [...prevState, params]);
-	}, [params]);
+import LogOutIcon from "../../assets/icons/log-out.svg";
+
+const NestedStack = createStackNavigator();
+
+export default function PostsScreen({
+	route: {
+		params: { setIsRegistered },
+	},
+}) {
+	const logOut = () => {
+		return (
+			<TouchableOpacity style={styles.logOutIcon} onPress={() => setIsRegistered(false)}>
+				<LogOutIcon />
+			</TouchableOpacity>
+		);
+	};
 
 	return (
-		<View style={styles.container}>
-			<FlatList
-				data={posts}
-				keyExtractor={(_, indx) => indx.toString()}
-				renderItem={({ item }) => (
-					<View style={styles.postsContainer}>
-						<Image style={styles.photo} source={{ uri: item.photo }} />
+		<NestedStack.Navigator>
+			{/* 
+				Posts 
+			*/}
+			<NestedStack.Screen
+				name="DefaultScreenPosts"
+				component={DefaultScreenPosts}
+				options={{
+					title: "Posts",
 
-						<Text style={styles.label}>{item.photoName}</Text>
+					headerTitleStyle: {
+						fontSize: 17,
+						lineHeight: 22,
+					},
 
-						<View style={styles.detailsContainer}>
-							<TouchableOpacity style={styles.commentsContainer}>
-								<CommentsIcon style={styles.commentsIcon} />
-
-								<Text style={styles.commentsCount}>0</Text>
-							</TouchableOpacity>
-
-							<TouchableOpacity onPress={() => navigate("MapScreen", { coords: item.coords, placeLabel: item.photoPlace })}>
-								<MapPinIcon style={styles.mapPinIcon} />
-
-								<Text style={styles.place}>{item.photoPlace}</Text>
-							</TouchableOpacity>
-						</View>
-					</View>
-				)}
+					headerRight: logOut,
+				}}
 			/>
-		</View>
+
+			{/* 
+				Comments
+			*/}
+			<NestedStack.Screen
+				name="CommentsScreen"
+				component={CommentsScreen}
+				options={{
+					title: "Comments",
+
+					headerTitleStyle: {
+						fontSize: 17,
+						lineHeight: 22,
+					},
+				}}
+			/>
+
+			{/* 
+				Map
+			*/}
+			<NestedStack.Screen
+				name="MapScreen"
+				component={MapScreen}
+				options={{
+					title: "Map",
+
+					headerTitleStyle: {
+						fontSize: 17,
+						lineHeight: 22,
+					},
+				}}
+			/>
+		</NestedStack.Navigator>
 	);
 }
 
 const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		justifyContent: "center",
-
-		backgroundColor: "#fff",
-	},
-
-	postsContainer: {
-		paddingHorizontal: 16,
-		paddingBottom: 32,
-	},
-
-	photo: {
-		width: "100%",
-		height: 240,
-
-		borderRadius: 8,
-	},
-
-	label: {
-		color: "#212121",
-		fontSize: 16,
-		fontWeight: "500",
-		lineHeight: 19,
-
-		marginTop: 8,
-	},
-
-	detailsContainer: {
-		display: "flex",
-		flexDirection: "row",
-		justifyContent: "space-between",
-		alignItems: "center",
-
-		marginTop: 8,
-	},
-
-	commentsContainer: {
-		display: "flex",
-		flexDirection: "row",
-		alignItems: "center",
-	},
-
-	commentsIcon: {
+	logOutIcon: {
 		width: 24,
 		height: 24,
-	},
-
-	commentsCount: {
-		color: "#bdbdbd",
-		fontSize: 16,
-		lineHeight: 19,
-
-		marginLeft: 6,
-	},
-
-	mapPinIcon: {
-		position: "absolute",
-		left: -28,
-		top: "-10%",
-
-		width: 24,
-		height: 24,
-	},
-
-	place: {
-		color: "#212121",
-		fontSize: 16,
-		fontWeight: "400",
-		lineHeight: 19,
-		textDecorationLine: "underline",
-		textAlign: "right",
+		marginRight: 16,
 	},
 });

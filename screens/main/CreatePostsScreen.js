@@ -62,7 +62,7 @@ export default function CreatePostsScreen({ navigation: { navigate } }) {
 	const handelChangePhotoPlace = value => setPhotoPlace(value);
 
 	const publishPhoto = () => {
-		navigate("PostsScreen", { photo, photoName, photoPlace, coords });
+		navigate("DefaultScreenPosts", { photo, photoName, photoPlace, coords });
 
 		handleClearData();
 	};

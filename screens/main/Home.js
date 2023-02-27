@@ -53,23 +53,24 @@ export default function Home({
 				},
 			}}
 		>
+			{/* 
+				Posts 
+			*/}
 			<Tab.Screen
 				name="PostsScreen"
 				component={PostsScreen}
 				options={{
-					title: "Posts",
-					headerTitleStyle: {
-						fontSize: 17,
-						lineHeight: 22,
-					},
-
-					headerRight: logOut,
+					headerShown: false,
 
 					tabBarIcon: () => <PostsIcon style={styles.tabIcon} />,
 					tabBarShowLabel: false,
 				}}
+				initialParams={{ setIsRegistered }}
 			/>
 
+			{/* 
+				Create post 
+			*/}
 			<Tab.Screen
 				name="CreatePostsScreen"
 				component={CreatePostsScreen}
@@ -94,6 +95,10 @@ export default function Home({
 					},
 				}}
 			/>
+
+			{/* 
+				Profile
+			*/}
 			<Tab.Screen
 				name="ProfileScreen"
 				component={ProfileScreen}
