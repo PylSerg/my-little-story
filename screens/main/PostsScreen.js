@@ -1,7 +1,10 @@
 import React from "react";
 
-import { StyleSheet, TouchableOpacity, moduleName } from "react-native";
+import { StyleSheet, TouchableOpacity } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
+
+import { useDispatch } from "react-redux";
+import { authSignOutUser } from "../../redux/auth/authOperations";
 
 import DefaultScreenPosts from "../nested/DefaultScreenPosts";
 import CommentsScreen from "../nested/CommentsScreen";
@@ -11,14 +14,12 @@ import LogOutIcon from "../../assets/icons/log-out.svg";
 
 const NestedStack = createStackNavigator();
 
-export default function PostsScreen({
-	route: {
-		params: { setIsRegistered },
-	},
-}) {
+export default function PostsScreen() {
+	const dispatch = useDispatch();
+
 	const logOut = () => {
 		return (
-			<TouchableOpacity style={styles.logOutIcon} onPress={() => setIsRegistered(false)}>
+			<TouchableOpacity style={styles.logOutIcon} onPress={() => dispatch(authSignOutUser())}>
 				<LogOutIcon />
 			</TouchableOpacity>
 		);

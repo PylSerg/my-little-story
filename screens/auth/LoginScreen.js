@@ -1,5 +1,10 @@
 import React, { useState } from "react";
+
 import { StyleSheet, TouchableOpacity, TouchableWithoutFeedback, Keyboard, View, Text, TextInput, ImageBackground } from "react-native";
+
+import { authSignInUser } from "../../redux/auth/authOperations";
+import { useDispatch } from "react-redux";
+
 import CommonStyles from "../../styles/CommonStyles";
 
 export default function LoginScreen({ navigation: { navigate } }) {
@@ -12,6 +17,8 @@ export default function LoginScreen({ navigation: { navigate } }) {
 
 	const [emailStyle, setEmailStyle] = useState(defaultInputStyle);
 	const [passwordStyle, setPasswordStyle] = useState(defaultInputStyle);
+
+	const dispatch = useDispatch();
 
 	// Toggle password visibility
 	const togglePasswordVisibility = () => setHidePassword(!hidePassword);
@@ -30,7 +37,9 @@ export default function LoginScreen({ navigation: { navigate } }) {
 
 	// Submit form
 	const submitForm = () => {
-		console.log({ email: email, password: password });
+		dispatch(authSignInUser({ email, password }));
+
+		// console.log({ email: email, password: password });
 
 		setEmail("");
 		setPassword("");

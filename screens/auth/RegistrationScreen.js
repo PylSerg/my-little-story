@@ -42,8 +42,10 @@ export default function RegistrationScreen({ navigation: { navigate } }) {
 
 	// Submit form
 	const submitForm = () => {
-		dispatch(authSignUpUser({ login: login, email: email, password: password }));
+		dispatch(authSignUpUser({ login, email, password }));
+
 		// console.log({ login: login, email: email, password: password });
+
 		setLogin("");
 		setEmail("");
 		setPassword("");

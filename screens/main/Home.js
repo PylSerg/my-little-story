@@ -1,7 +1,6 @@
 import React from "react";
 
 import { StyleSheet, TouchableOpacity } from "react-native";
-
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import PostsScreen from "./PostsScreen";
@@ -14,20 +13,17 @@ import PostsIcon from "../../assets/menu-icons/posts.svg";
 import CreateIcon from "../../assets/menu-icons/create.svg";
 import ProfileIcon from "../../assets/menu-icons/profile.svg";
 
-import { CommonActions } from "@react-navigation/native";
+import { useDispatch } from "react-redux";
+import { authSignOutUser } from "../../redux/auth/authOperations";
 
 const Tab = createBottomTabNavigator();
 
-export default function Home({
-	route: {
-		params: { setIsRegistered },
-	},
-}) {
-	const goBack = () => {
-		CommonActions.goBack();
+export default function Home({ navigation: { navigate } }) {
+	const dispatch = useDispatch();
 
+	const goBack = () => {
 		return (
-			<TouchableOpacity style={styles.goBackIcon} onPress={() => setIsRegistered(false)}>
+			<TouchableOpacity style={styles.goBackIcon} onPress={() => navigate("PostsScreen")}>
 				<GoBackIcon />
 			</TouchableOpacity>
 		);
@@ -35,7 +31,7 @@ export default function Home({
 
 	const logOut = () => {
 		return (
-			<TouchableOpacity style={styles.logOutIcon} onPress={() => setIsRegistered(false)}>
+			<TouchableOpacity style={styles.logOutIcon} onPress={() => dispatch(authSignOutUser())}>
 				<LogOutIcon />
 			</TouchableOpacity>
 		);
@@ -65,7 +61,6 @@ export default function Home({
 					tabBarIcon: () => <PostsIcon style={styles.tabIcon} />,
 					tabBarShowLabel: false,
 				}}
-				initialParams={{ setIsRegistered }}
 			/>
 
 			{/* 
