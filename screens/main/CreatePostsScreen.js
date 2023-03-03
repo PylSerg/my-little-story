@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Text, TextInput, ScrollView, View, Image, TouchableOpacity, TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView, StyleSheet } from "react-native";
 
+import { storage } from "../../firebase.config";
+import { ref, uploadBytes } from "firebase/storage";
+
 import { Camera } from "expo-camera";
 import * as Location from "expo-location";
 
@@ -63,8 +66,18 @@ export default function CreatePostsScreen({ navigation: { navigate } }) {
 
 	const publishPhoto = () => {
 		navigate("DefaultScreenPosts", { photo, photoName, photoPlace, coords });
-
+		uploadPhotoToServer();
 		handleClearData();
+	};
+
+	const uploadPhotoToServer = async () => {
+		const response = await fetch(photo);
+		const file = await response.blob();
+
+		const photoId = Date.now().toString();
+		const storageRef = ref(storage, `images/${photoId}`);
+
+		await uploadBytes(storageRef, file);
 	};
 
 	const handleClearData = () => {
