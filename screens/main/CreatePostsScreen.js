@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Text, TextInput, ScrollView, View, Image, TouchableOpacity, TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView, StyleSheet } from "react-native";
 
-import { storage } from "../../firebase.config";
-import { ref, uploadBytes } from "firebase/storage";
+import { useSelector } from "react-redux";
+
+import { storage, firestore } from "../../firebase.config";
+
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { collection, addDoc } from "firebase/firestore";
 
 import { Camera } from "expo-camera";
 import * as Location from "expo-location";
@@ -26,13 +30,15 @@ export default function CreatePostsScreen({ navigation: { navigate } }) {
 
 	const [coords, setCoords] = useState({ lat: 0, lon: 0 });
 
+	const { userId, nickname } = useSelector(state => state.auth);
+
 	useEffect(() => {
 		setReboot(false);
 	}, [reboot]);
 
 	useEffect(() => {
 		(async () => {
-			let { status } = await Location.requestForegroundPermissionsAsync();
+			await Location.requestForegroundPermissionsAsync();
 		})();
 	}, []);
 
@@ -66,8 +72,21 @@ export default function CreatePostsScreen({ navigation: { navigate } }) {
 
 	const publishPhoto = () => {
 		navigate("DefaultScreenPosts", { photo, photoName, photoPlace, coords });
-		uploadPhotoToServer();
+		uploadPostToServer();
 		handleClearData();
+	};
+
+	const uploadPostToServer = async () => {
+		const photoOnServer = await uploadPhotoToServer();
+
+		await addDoc(collection(firestore, "posts"), {
+			userId,
+			nickname,
+			photo: photoOnServer,
+			photoName,
+			photoPlace,
+			coords,
+		});
 	};
 
 	const uploadPhotoToServer = async () => {
@@ -78,6 +97,10 @@ export default function CreatePostsScreen({ navigation: { navigate } }) {
 		const storageRef = ref(storage, `images/${photoId}`);
 
 		await uploadBytes(storageRef, file);
+
+		const processedPhoto = await getDownloadURL(storageRef);
+
+		return processedPhoto;
 	};
 
 	const handleClearData = () => {
