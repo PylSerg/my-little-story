@@ -70,12 +70,6 @@ export default function CreatePostsScreen({ navigation: { navigate } }) {
 	const handelChangePhotoName = value => setPhotoName(value);
 	const handelChangePhotoPlace = value => setPhotoPlace(value);
 
-	const publishPhoto = () => {
-		navigate("DefaultScreenPosts", { photo, photoName, photoPlace, coords });
-		uploadPostToServer();
-		handleClearData();
-	};
-
 	const uploadPostToServer = async () => {
 		const photoOnServer = await uploadPhotoToServer();
 
@@ -101,6 +95,12 @@ export default function CreatePostsScreen({ navigation: { navigate } }) {
 		const processedPhoto = await getDownloadURL(storageRef);
 
 		return processedPhoto;
+	};
+
+	const publishPhoto = () => {
+		uploadPostToServer();
+		navigate("DefaultScreenPosts");
+		handleClearData();
 	};
 
 	const handleClearData = () => {
